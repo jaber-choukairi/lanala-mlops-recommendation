@@ -1,0 +1,84 @@
+schema: '2.0'
+stages:
+  generate_data:
+    cmd: python -m pipelines.generate_data
+    deps:
+    - path: pipelines/generate_data.py
+      hash: md5
+      md5: adddd8b424975232f170ca99c44439ac
+      size: 9162
+    params:
+      params.yaml:
+        data_generation.number_of_clients: 5000
+        data_generation.random_seed: 42
+    outs:
+    - path: data/raw/banking_clients.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+  validate_data:
+    cmd: python -m pipelines.validate_data
+    deps:
+    - path: data/raw/banking_clients.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+    - path: pipelines/validate_data.py
+      hash: md5
+      md5: e1100f6db49ad4f8a9e6d3342dc37f9a
+      size: 6340
+    params:
+      params.yaml:
+        data_validation.maximum_missing_percentage: 0.0
+        data_validation.minimum_rows: 1000
+    outs:
+    - path: data/validation/validation_report.json
+      hash: md5
+      md5: 7366bf420a08e545a9a99dadd19a64ca
+      size: 396
+  preprocess:
+    cmd: python -m pipelines.preprocess
+    deps:
+    - path: data/raw/banking_clients.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+    - path: data/validation/validation_report.json
+      hash: md5
+      md5: 7366bf420a08e545a9a99dadd19a64ca
+      size: 396
+    - path: pipelines/preprocess.py
+      hash: md5
+      md5: bfcc3611e53c06ae90bcb69e675d8559
+      size: 3275
+    params:
+      params.yaml:
+        preprocessing.maximum_age: 85
+        preprocessing.maximum_income: 50000
+        preprocessing.minimum_age: 18
+        preprocessing.minimum_income: 0
+    outs:
+    - path: data/interim/banking_clients_clean.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+  build_features:
+    cmd: python -m pipelines.build_features
+    deps:
+    - path: data/interim/banking_clients_clean.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+    - path: pipelines/build_features.py
+      hash: md5
+      md5: e87993cf42219053570a01717685ea14
+      size: 3690
+    outs:
+    - path: data/features/client_features.parquet
+      hash: md5
+      md5: 25f8e9f62829b8360467f52f47558554
+      size: 319640
+    - path: data/processed/banking_clients_processed.parquet
+      hash: md5
+      md5: d86f1b39e483d466187a61a8845f1166
+      size: 215282

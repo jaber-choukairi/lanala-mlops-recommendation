@@ -1,0 +1,45 @@
+stages:
+  generate_data:
+    cmd: python -m pipelines.generate_data
+    deps:
+      - pipelines/generate_data.py
+    params:
+      - data_generation.number_of_clients
+      - data_generation.random_seed
+    outs:
+      - data/raw/banking_clients.csv
+
+  validate_data:
+    cmd: python -m pipelines.validate_data
+    deps:
+      - pipelines/validate_data.py
+      - data/raw/banking_clients.csv
+    params:
+      - data_validation.minimum_rows
+      - data_validation.maximum_missing_percentage
+    metrics:
+      - data/validation/validation_report.json:
+          cache: false
+
+  preprocess:
+    cmd: python -m pipelines.preprocess
+    deps:
+      - pipelines/preprocess.py
+      - data/raw/banking_clients.csv
+      - data/validation/validation_report.json
+    params:
+      - preprocessing.minimum_age
+      - preprocessing.maximum_age
+      - preprocessing.minimum_income
+      - preprocessing.maximum_income
+    outs:
+      - data/interim/banking_clients_clean.csv
+
+  build_features:
+    cmd: python -m pipelines.build_features
+    deps:
+      - pipelines/build_features.py
+      - data/interim/banking_clients_clean.csv
+    outs:
+      - data/processed/banking_clients_processed.parquet
+      - data/features/client_features.parquet

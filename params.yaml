@@ -1,0 +1,16 @@
+data_generation:
+  number_of_clients: 5000
+  random_seed: 42
+
+data_validation:
+  minimum_rows: 1000
+  maximum_missing_percentage: 0.0
+
+preprocessing:
+  minimum_age: 18
+  maximum_age: 85
+  minimum_income: 0
+  maximum_income: 50000
+
+features:
+  reference_date: "2026-09-01"

@@ -1,0 +1,15 @@
+{
+  "validation_success": true,
+  "row_count": 5000,
+  "column_count": 23,
+  "evaluated_expectations": 44,
+  "successful_expectations": 44,
+  "unsuccessful_expectations": 0,
+  "success_percentage": 100.0,
+  "business_rules": {
+    "product_count_consistent": true,
+    "incorrect_product_count_rows": 0,
+    "target_not_already_owned": true,
+    "target_already_owned_rows": 0
+  }
+}
