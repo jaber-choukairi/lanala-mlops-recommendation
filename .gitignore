@@ -1,0 +1,53 @@
+# Environnement Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Variables sensibles
+.env
+*.env
+!.env.example
+
+# Données
+data/raw/*
+data/interim/*
+data/processed/*
+data/features/*
+data/reference/*
+
+# Autoriser les fichiers de conservation Git
+!data/**/.gitkeep
+
+# DVC
+.dvc/cache/
+.dvc/tmp/
+
+# MLflow
+mlruns/
+mlartifacts/
+mlflow.db
+
+# Evidently
+monitoring/reports/*.html
+monitoring/reports/*.json
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Docker et logs
+*.log
