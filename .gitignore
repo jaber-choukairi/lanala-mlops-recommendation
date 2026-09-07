@@ -51,3 +51,21 @@ Thumbs.db
 
 # Docker et logs
 *.log
+
+# MLflow local
+mlflow.db
+mlflow.db-shm
+mlflow.db-wal
+mlartifacts/
+mlruns/
+
+# Rapports générés
+reports/phase3/
+
+# Données divisées
+data/splits/
+
+
+# Phase 4
+reports/phase4/
+optuna.db
