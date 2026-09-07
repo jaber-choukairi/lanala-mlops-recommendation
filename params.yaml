@@ -1,0 +1,32 @@
+data_generation:
+  number_of_clients: 5000
+  random_seed: 42
+
+data_validation:
+  minimum_rows: 1000
+  maximum_missing_percentage: 0.0
+
+preprocessing:
+  minimum_age: 18
+  maximum_age: 85
+  minimum_income: 0
+  maximum_income: 50000
+
+features:
+  reference_date: "2026-09-01"
+
+data_split:
+  random_seed: 42
+  train_size: 0.70
+  validation_size: 0.15
+  test_size: 0.15
+
+baseline:
+  experiment_name: "lanala-banking-baselines"
+  tracking_uri: "http://127.0.0.1:5000"
+  top_k: 3
+  logistic_regression:
+    max_iter: 1000
+    class_weight: "balanced"
+    solver: "lbfgs"
+    random_seed: 42
