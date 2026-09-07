@@ -43,3 +43,39 @@ stages:
     outs:
       - data/processed/banking_clients_processed.parquet
       - data/features/client_features.parquet
+
+  split_data:
+    cmd: python -m pipelines.split_data
+    deps:
+      - pipelines/split_data.py
+      - data/features/client_features.parquet
+    params:
+      - data_split.random_seed
+      - data_split.train_size
+      - data_split.validation_size
+      - data_split.test_size
+    outs:
+      - data/splits/train.parquet
+      - data/splits/validation.parquet
+      - data/splits/test.parquet
+
+  train_baselines:
+    cmd: python -m pipelines.train_baselines
+    deps:
+      - pipelines/train_baselines.py
+      - src/models/metrics.py
+      - data/features/client_features.parquet
+      - data/splits/train.parquet
+      - data/splits/validation.parquet
+      - data/splits/test.parquet
+    params:
+      - baseline.experiment_name
+      - baseline.tracking_uri
+      - baseline.top_k
+      - baseline.logistic_regression.max_iter
+      - baseline.logistic_regression.class_weight
+      - baseline.logistic_regression.solver
+      - baseline.logistic_regression.random_seed
+    metrics:
+      - reports/phase3/summary.json:
+          cache: false

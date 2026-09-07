@@ -82,3 +82,74 @@ stages:
       hash: md5
       md5: d86f1b39e483d466187a61a8845f1166
       size: 215282
+  split_data:
+    cmd: python -m pipelines.split_data
+    deps:
+    - path: data/features/client_features.parquet
+      hash: md5
+      md5: 25f8e9f62829b8360467f52f47558554
+      size: 319640
+    - path: pipelines/split_data.py
+      hash: md5
+      md5: 4749d0b093e4d059a513f60710dca1a5
+      size: 2956
+    params:
+      params.yaml:
+        data_split.random_seed: 42
+        data_split.test_size: 0.15
+        data_split.train_size: 0.7
+        data_split.validation_size: 0.15
+    outs:
+    - path: data/splits/test.parquet
+      hash: md5
+      md5: 4b3fcdb79d950df0603872763d323015
+      size: 72731
+    - path: data/splits/train.parquet
+      hash: md5
+      md5: 4867785d3d29636b9a19b1d84cdd4db1
+      size: 230458
+    - path: data/splits/validation.parquet
+      hash: md5
+      md5: 62baf4fa257a310f5236b1b4006227e4
+      size: 72341
+  train_baselines:
+    cmd: python -m pipelines.train_baselines
+    deps:
+    - path: data/features/client_features.parquet
+      hash: md5
+      md5: 25f8e9f62829b8360467f52f47558554
+      size: 319640
+    - path: data/splits/test.parquet
+      hash: md5
+      md5: 4b3fcdb79d950df0603872763d323015
+      size: 72731
+    - path: data/splits/train.parquet
+      hash: md5
+      md5: 4867785d3d29636b9a19b1d84cdd4db1
+      size: 230458
+    - path: data/splits/validation.parquet
+      hash: md5
+      md5: 62baf4fa257a310f5236b1b4006227e4
+      size: 72341
+    - path: pipelines/train_baselines.py
+      hash: md5
+      md5: ca1cd11e11f28fbe84c26b7c8fcdd03a
+      size: 15037
+    - path: src/models/metrics.py
+      hash: md5
+      md5: 07331a9626db5d9d801ce8f7a3ff5e2a
+      size: 1949
+    params:
+      params.yaml:
+        baseline.experiment_name: lanala-banking-baselines
+        baseline.logistic_regression.class_weight: balanced
+        baseline.logistic_regression.max_iter: 1000
+        baseline.logistic_regression.random_seed: 42
+        baseline.logistic_regression.solver: lbfgs
+        baseline.top_k: 3
+        baseline.tracking_uri: http://127.0.0.1:5000
+    outs:
+    - path: reports/phase3/summary.json
+      hash: md5
+      md5: c136cfcca60e1b53f604a3183979c68b
+      size: 1405
