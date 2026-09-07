@@ -79,3 +79,39 @@ stages:
     metrics:
       - reports/phase3/summary.json:
           cache: false
+
+  train_xgboost:
+    cmd: python -m pipelines.train_xgboost
+    deps:
+      - pipelines/train_xgboost.py
+      - pipelines/train_baselines.py
+      - src/models/metrics.py
+      - src/models/champion.py
+      - data/features/client_features.parquet
+      - data/splits/train.parquet
+      - data/splits/validation.parquet
+      - data/splits/test.parquet
+    params:
+      - xgboost.experiment_name
+      - xgboost.tracking_uri
+      - xgboost.study_name
+      - xgboost.number_of_trials
+      - xgboost.optimization_metric
+      - xgboost.top_k
+      - xgboost.random_seed
+      - xgboost.n_jobs
+      - xgboost.search_space
+      - xgboost.promotion
+    metrics:
+      - reports/phase4/summary.json:
+          cache: false
+    outs:
+      - reports/phase4/confusion_matrix.png
+      - reports/phase4/feature_importance.csv
+      - reports/phase4/feature_importance.png
+      - reports/phase4/optuna_trials.csv
+      - reports/phase4/optuna_history.png
+      - reports/phase4/test_predictions.csv
+      - reports/phase4/classification_report.json
+      - reports/phase4/promotion_decision.json
+      - reports/phase4/label_encoder.joblib

@@ -64,3 +64,8 @@ reports/phase3/
 
 # Données divisées
 data/splits/
+
+
+# Phase 4
+reports/phase4/
+optuna.db
