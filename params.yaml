@@ -65,3 +65,16 @@ xgboost:
     minimum_top_3_accuracy: 0.70
     minimum_top_3_improvement: 0.01
     maximum_macro_f1_regression: 0.01
+
+
+registry:
+  tracking_uri: "http://127.0.0.1:5000"
+  model_name: "lanala-banking-recommender"
+  staging_alias: "staging"
+  production_alias: "production"
+
+serving:
+  model_name: "lanala-banking-recommender"
+  model_alias: "staging"
+  top_k: 3
+  label_encoder_path: "reports/phase4/label_encoder.joblib"
