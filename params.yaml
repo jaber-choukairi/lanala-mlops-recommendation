@@ -1,0 +1,80 @@
+data_generation:
+  number_of_clients: 5000
+  random_seed: 42
+
+data_validation:
+  minimum_rows: 1000
+  maximum_missing_percentage: 0.0
+
+preprocessing:
+  minimum_age: 18
+  maximum_age: 85
+  minimum_income: 0
+  maximum_income: 50000
+
+features:
+  reference_date: "2026-09-01"
+
+data_split:
+  random_seed: 42
+  train_size: 0.70
+  validation_size: 0.15
+  test_size: 0.15
+
+baseline:
+  experiment_name: "lanala-banking-baselines"
+  tracking_uri: "http://127.0.0.1:5000"
+  top_k: 3
+  logistic_regression:
+    max_iter: 1000
+    class_weight: "balanced"
+    solver: "lbfgs"
+    random_seed: 42
+
+xgboost:
+  experiment_name: "lanala-banking-baselines"
+  tracking_uri: "http://127.0.0.1:5000"
+  study_name: "lanala-xgboost-optimization"
+  number_of_trials: 20
+  optimization_metric: "validation_top_3_accuracy"
+  top_k: 3
+  random_seed: 42
+  n_jobs: -1
+
+  search_space:
+    n_estimators_min: 100
+    n_estimators_max: 500
+    max_depth_min: 3
+    max_depth_max: 8
+    learning_rate_min: 0.01
+    learning_rate_max: 0.20
+    min_child_weight_min: 1
+    min_child_weight_max: 10
+    gamma_min: 0.0
+    gamma_max: 2.0
+    subsample_min: 0.70
+    subsample_max: 1.0
+    colsample_bytree_min: 0.70
+    colsample_bytree_max: 1.0
+    reg_alpha_min: 0.00000001
+    reg_alpha_max: 5.0
+    reg_lambda_min: 0.10
+    reg_lambda_max: 10.0
+
+  promotion:
+    minimum_top_3_accuracy: 0.70
+    minimum_top_3_improvement: 0.01
+    maximum_macro_f1_regression: 0.01
+
+
+registry:
+  tracking_uri: "http://127.0.0.1:5000"
+  model_name: "lanala-banking-recommender"
+  staging_alias: "staging"
+  production_alias: "production"
+
+serving:
+  model_name: "lanala-banking-recommender"
+  model_alias: "staging"
+  top_k: 3
+  label_encoder_path: "reports/phase4/label_encoder.joblib"

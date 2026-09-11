@@ -1,0 +1,264 @@
+schema: '2.0'
+stages:
+  generate_data:
+    cmd: python -m pipelines.generate_data
+    deps:
+    - path: pipelines/generate_data.py
+      hash: md5
+      md5: adddd8b424975232f170ca99c44439ac
+      size: 9162
+    params:
+      params.yaml:
+        data_generation.number_of_clients: 5000
+        data_generation.random_seed: 42
+    outs:
+    - path: data/raw/banking_clients.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+  validate_data:
+    cmd: python -m pipelines.validate_data
+    deps:
+    - path: data/raw/banking_clients.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+    - path: pipelines/validate_data.py
+      hash: md5
+      md5: 793e46aaac76fc2603f3c73e0e393c7f
+      size: 6356
+    params:
+      params.yaml:
+        data_validation.maximum_missing_percentage: 0.0
+        data_validation.minimum_rows: 1000
+    outs:
+    - path: data/validation/validation_report.json
+      hash: md5
+      md5: 7366bf420a08e545a9a99dadd19a64ca
+      size: 396
+  preprocess:
+    cmd: python -m pipelines.preprocess
+    deps:
+    - path: data/raw/banking_clients.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+    - path: data/validation/validation_report.json
+      hash: md5
+      md5: 7366bf420a08e545a9a99dadd19a64ca
+      size: 396
+    - path: pipelines/preprocess.py
+      hash: md5
+      md5: bfcc3611e53c06ae90bcb69e675d8559
+      size: 3275
+    params:
+      params.yaml:
+        preprocessing.maximum_age: 85
+        preprocessing.maximum_income: 50000
+        preprocessing.minimum_age: 18
+        preprocessing.minimum_income: 0
+    outs:
+    - path: data/interim/banking_clients_clean.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+  build_features:
+    cmd: python -m pipelines.build_features
+    deps:
+    - path: data/interim/banking_clients_clean.csv
+      hash: md5
+      md5: 59578262cbc4a54342746308445ed3ff
+      size: 562058
+    - path: pipelines/build_features.py
+      hash: md5
+      md5: e87993cf42219053570a01717685ea14
+      size: 3690
+    outs:
+    - path: data/features/client_features.parquet
+      hash: md5
+      md5: 25f8e9f62829b8360467f52f47558554
+      size: 319640
+    - path: data/processed/banking_clients_processed.parquet
+      hash: md5
+      md5: d86f1b39e483d466187a61a8845f1166
+      size: 215282
+  split_data:
+    cmd: python -m pipelines.split_data
+    deps:
+    - path: data/features/client_features.parquet
+      hash: md5
+      md5: 25f8e9f62829b8360467f52f47558554
+      size: 319640
+    - path: pipelines/split_data.py
+      hash: md5
+      md5: 4749d0b093e4d059a513f60710dca1a5
+      size: 2956
+    params:
+      params.yaml:
+        data_split.random_seed: 42
+        data_split.test_size: 0.15
+        data_split.train_size: 0.7
+        data_split.validation_size: 0.15
+    outs:
+    - path: data/splits/test.parquet
+      hash: md5
+      md5: 4b3fcdb79d950df0603872763d323015
+      size: 72731
+    - path: data/splits/train.parquet
+      hash: md5
+      md5: 4867785d3d29636b9a19b1d84cdd4db1
+      size: 230458
+    - path: data/splits/validation.parquet
+      hash: md5
+      md5: 62baf4fa257a310f5236b1b4006227e4
+      size: 72341
+  train_baselines:
+    cmd: python -m pipelines.train_baselines
+    deps:
+    - path: data/features/client_features.parquet
+      hash: md5
+      md5: 25f8e9f62829b8360467f52f47558554
+      size: 319640
+    - path: data/splits/test.parquet
+      hash: md5
+      md5: 4b3fcdb79d950df0603872763d323015
+      size: 72731
+    - path: data/splits/train.parquet
+      hash: md5
+      md5: 4867785d3d29636b9a19b1d84cdd4db1
+      size: 230458
+    - path: data/splits/validation.parquet
+      hash: md5
+      md5: 62baf4fa257a310f5236b1b4006227e4
+      size: 72341
+    - path: pipelines/train_baselines.py
+      hash: md5
+      md5: ca1cd11e11f28fbe84c26b7c8fcdd03a
+      size: 15037
+    - path: src/models/metrics.py
+      hash: md5
+      md5: 07331a9626db5d9d801ce8f7a3ff5e2a
+      size: 1949
+    params:
+      params.yaml:
+        baseline.experiment_name: lanala-banking-baselines
+        baseline.logistic_regression.class_weight: balanced
+        baseline.logistic_regression.max_iter: 1000
+        baseline.logistic_regression.random_seed: 42
+        baseline.logistic_regression.solver: lbfgs
+        baseline.top_k: 3
+        baseline.tracking_uri: http://127.0.0.1:5000
+    outs:
+    - path: reports/phase3/summary.json
+      hash: md5
+      md5: c136cfcca60e1b53f604a3183979c68b
+      size: 1405
+  train_xgboost:
+    cmd: python -m pipelines.train_xgboost
+    deps:
+    - path: data/features/client_features.parquet
+      hash: md5
+      md5: 25f8e9f62829b8360467f52f47558554
+      size: 319640
+    - path: data/splits/test.parquet
+      hash: md5
+      md5: 4b3fcdb79d950df0603872763d323015
+      size: 72731
+    - path: data/splits/train.parquet
+      hash: md5
+      md5: 4867785d3d29636b9a19b1d84cdd4db1
+      size: 230458
+    - path: data/splits/validation.parquet
+      hash: md5
+      md5: 62baf4fa257a310f5236b1b4006227e4
+      size: 72341
+    - path: pipelines/train_baselines.py
+      hash: md5
+      md5: ca1cd11e11f28fbe84c26b7c8fcdd03a
+      size: 15037
+    - path: pipelines/train_xgboost.py
+      hash: md5
+      md5: 3f5403b5aaca5c7eb5d5eb05ee6a38d9
+      size: 22209
+    - path: src/models/champion.py
+      hash: md5
+      md5: 9867f099512de6747bedce23e25cb511
+      size: 1995
+    - path: src/models/metrics.py
+      hash: md5
+      md5: 07331a9626db5d9d801ce8f7a3ff5e2a
+      size: 1949
+    params:
+      params.yaml:
+        xgboost.experiment_name: lanala-banking-baselines
+        xgboost.n_jobs: -1
+        xgboost.number_of_trials: 20
+        xgboost.optimization_metric: validation_top_3_accuracy
+        xgboost.promotion:
+          minimum_top_3_accuracy: 0.7
+          minimum_top_3_improvement: 0.01
+          maximum_macro_f1_regression: 0.01
+        xgboost.random_seed: 42
+        xgboost.search_space:
+          n_estimators_min: 100
+          n_estimators_max: 500
+          max_depth_min: 3
+          max_depth_max: 8
+          learning_rate_min: 0.01
+          learning_rate_max: 0.2
+          min_child_weight_min: 1
+          min_child_weight_max: 10
+          gamma_min: 0.0
+          gamma_max: 2.0
+          subsample_min: 0.7
+          subsample_max: 1.0
+          colsample_bytree_min: 0.7
+          colsample_bytree_max: 1.0
+          reg_alpha_min: 1e-08
+          reg_alpha_max: 5.0
+          reg_lambda_min: 0.1
+          reg_lambda_max: 10.0
+        xgboost.study_name: lanala-xgboost-optimization
+        xgboost.top_k: 3
+        xgboost.tracking_uri: http://127.0.0.1:5000
+    outs:
+    - path: reports/phase4/classification_report.json
+      hash: md5
+      md5: 3fe1d0286f8bf8aff34b5a57468c87b9
+      size: 1296
+    - path: reports/phase4/confusion_matrix.png
+      hash: md5
+      md5: 86bb02e93d09bd5f41112ee783d33b68
+      size: 98762
+    - path: reports/phase4/feature_importance.csv
+      hash: md5
+      md5: 435c2b369416fec8d977208cfc954a3f
+      size: 1798
+    - path: reports/phase4/feature_importance.png
+      hash: md5
+      md5: 79cbe4b2f70b342fe30f0b7d2c9b1980
+      size: 99659
+    - path: reports/phase4/label_encoder.joblib
+      hash: md5
+      md5: 3baa3a02d4df78371d7e42bd73e01275
+      size: 568
+    - path: reports/phase4/optuna_history.png
+      hash: md5
+      md5: f86c0e48a71ba3a6b65d85a8ede1e6ad
+      size: 54498
+    - path: reports/phase4/optuna_trials.csv
+      hash: md5
+      md5: 5a0468c14e325b886b5a58c0f0776237
+      size: 4765
+    - path: reports/phase4/promotion_decision.json
+      hash: md5
+      md5: c92a5dcfb85e85fdee2091097975c573
+      size: 388
+    - path: reports/phase4/summary.json
+      hash: md5
+      md5: a3fac78ddd63f20afad962b268210990
+      size: 1939
+    - path: reports/phase4/test_predictions.csv
+      hash: md5
+      md5: af40278d84d6687893ce54d446f5af37
+      size: 81208

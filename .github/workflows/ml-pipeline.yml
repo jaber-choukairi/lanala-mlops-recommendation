@@ -1,0 +1,321 @@
+name: LANALA MLOps Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+    inputs:
+      run_deployment:
+        description: "Déployer le modèle en staging"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lanala-mlops-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.10"
+  MODEL_NAME: "lanala-banking-recommender"
+  MLFLOW_TRACKING_URI: "http://localhost:5000"
+
+jobs:
+  tests:
+    name: 1 - Tests Python
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le repository
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Exécuter les tests
+        run: |
+          python -m pytest -v \
+            --ignore=tests/integration/test_staging_api.py \
+            --cov=api \
+            --cov=src \
+            --cov-report=term-missing \
+            --cov-report=xml
+
+      - name: Sauvegarder le rapport de couverture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+          if-no-files-found: warn
+
+  data-quality:
+    name: 2 - Qualité des données
+    needs: tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le repository
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Vérifier la version de Great Expectations
+        run: |
+          python -c "import great_expectations as gx; print(gx.__version__)"
+          python -c "from great_expectations.dataset import PandasDataset; print('Import PandasDataset OK')"
+
+      - name: Générer, valider et transformer les données
+        run: |
+          dvc repro split_data
+
+      - name: Sauvegarder les rapports de données
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-quality-reports
+          path: |
+            reports/data_quality/
+          if-no-files-found: warn
+
+  training:
+    name: 3 - Entraînement et évaluation
+    needs: data-quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le repository
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Reproduire les données
+        run: |
+          dvc repro
+
+      - name: Entraîner la baseline
+        run: |
+          python -m pipelines.train_baseline
+
+      - name: Entraîner XGBoost
+        run: |
+          python -m pipelines.train_xgboost
+
+      - name: Comparer Champion et Challenger
+        run: |
+          python -m pipelines.compare_champion_challenger
+
+      - name: Vérifier les seuils
+        run: |
+          python -m pipelines.check_quality_gate
+
+      - name: Sauvegarder les résultats ML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-evaluation-reports
+          path: |
+            reports/phase3/
+            reports/phase4/
+            reports/phase6/
+          if-no-files-found: error
+
+  staging:
+    name: 4 - Déploiement Staging
+    needs:
+      - tests
+      - data-quality
+      - training
+
+    if: >
+      github.event_name == 'workflow_dispatch' &&
+      inputs.run_deployment == true
+
+    runs-on:
+      - self-hosted
+      - Windows
+      - X64
+
+    environment:
+      name: staging
+
+    steps:
+      - name: Récupérer le repository
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Installer les dépendances
+        shell: powershell
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Démarrer MLflow
+        shell: powershell
+        run: |
+          docker compose up -d mlflow
+          docker compose ps
+
+      - name: Attendre MLflow
+        shell: powershell
+        run: |
+          $maximumAttempts = 30
+
+          for ($attempt = 1; $attempt -le $maximumAttempts; $attempt++) {
+              try {
+                  $response = Invoke-WebRequest `
+                    -Uri "http://localhost:5000/health" `
+                    -UseBasicParsing
+
+                  if ($response.StatusCode -eq 200) {
+                      Write-Host "MLflow est disponible."
+                      exit 0
+                  }
+              }
+              catch {
+                  Write-Host "Attente de MLflow : tentative $attempt"
+                  Start-Sleep -Seconds 5
+              }
+          }
+
+          Write-Error "MLflow ne répond pas."
+          docker compose logs mlflow
+          exit 1
+
+      - name: Reproduire l’entraînement
+        shell: powershell
+        run: |
+          dvc repro
+          python -m pipelines.train_baseline
+          python -m pipelines.train_xgboost
+          python -m pipelines.compare_champion_challenger
+          python -m pipelines.check_quality_gate
+
+      - name: Enregistrer le modèle en staging
+        shell: powershell
+        run: |
+          python -m pipelines.register_model
+
+      - name: Démarrer FastAPI avec staging
+        shell: powershell
+        run: |
+          $env:MODEL_ALIAS = "staging"
+          docker compose up -d --build --force-recreate api
+          docker compose ps
+
+      - name: Tester le modèle staging
+        shell: powershell
+        run: |
+          python -m pytest tests/integration/test_staging_api.py -v
+
+      - name: Afficher les logs en cas d’échec
+        if: failure()
+        shell: powershell
+        run: |
+          docker compose logs mlflow
+          docker compose logs api
+
+  production:
+    name: 5 - Promotion Production
+    needs: staging
+
+    runs-on:
+      - self-hosted
+      - Windows
+      - X64
+
+    environment:
+      name: production
+
+    steps:
+      - name: Récupérer le repository
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Installer les dépendances
+        shell: powershell
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Promouvoir staging vers production
+        shell: powershell
+        run: |
+          python -m pipelines.promote_model
+
+      - name: Redémarrer FastAPI avec production
+        shell: powershell
+        run: |
+          $env:MODEL_ALIAS = "production"
+          docker compose up -d --build --force-recreate api
+
+      - name: Vérifier le service Production
+        shell: powershell
+        run: |
+          $health = Invoke-RestMethod `
+            -Uri "http://localhost:8000/health"
+
+          $health | ConvertTo-Json
+
+          if ($health.status -ne "healthy") {
+              Write-Error "L'API Production n'est pas healthy."
+              exit 1
+          }
+
+          if ($health.model_alias -ne "production") {
+              Write-Error "L'API ne charge pas l'alias production."
+              exit 1
+          }
+
+      - name: Afficher les logs en cas d’échec
+        if: failure()
+        shell: powershell
+        run: |
+          docker compose logs mlflow
+          docker compose logs api
