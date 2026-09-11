@@ -25,8 +25,8 @@ stages:
       size: 562058
     - path: pipelines/validate_data.py
       hash: md5
-      md5: e1100f6db49ad4f8a9e6d3342dc37f9a
-      size: 6340
+      md5: 793e46aaac76fc2603f3c73e0e393c7f
+      size: 6356
     params:
       params.yaml:
         data_validation.maximum_missing_percentage: 0.0

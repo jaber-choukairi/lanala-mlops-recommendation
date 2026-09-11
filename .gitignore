@@ -73,3 +73,10 @@ optuna.db
 # Stockage Docker MLflow
 storage/mlflow/
 reports/phase5/
+
+.env
+.venv/
+storage/mlflow/
+mlflow.db
+mlartifacts/
+reports/phase5/

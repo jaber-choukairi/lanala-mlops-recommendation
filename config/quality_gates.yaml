@@ -1,0 +1,10 @@
+model:
+  minimum_test_top_3_accuracy: 0.84
+  minimum_test_macro_f1: 0.33
+  minimum_top_3_improvement: 0.01
+  maximum_macro_f1_regression: 0.005
+
+data:
+  minimum_rows: 3000
+  maximum_missing_ratio: 0.05
+  required_target_classes: 6

@@ -1,4 +1,5 @@
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -233,13 +234,13 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
 
+    # --- Logique de barrière (gate) ---
     if not validation_success:
-        raise ValueError(
-            "La validation des données a échoué. "
-            f"Consultez {REPORT_PATH}."
-        )
+        print("La validation Great Expectations a échoué.")
+        sys.exit(1)
 
-    print("Validation Great Expectations réussie.")
+    print("Validation des données réussie.")
+    sys.exit(0)
 
 
 if __name__ == "__main__":

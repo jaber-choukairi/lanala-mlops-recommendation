@@ -19,3 +19,4 @@ pyyaml
 joblib
 supabase
 psycopg2-binary
+requests>=2.32,<3.0
