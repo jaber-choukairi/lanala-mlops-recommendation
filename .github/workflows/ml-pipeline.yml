@@ -68,42 +68,42 @@ jobs:
           if-no-files-found: warn
 
   data-quality:
-  name: 2 - Qualité des données
-  needs: tests
-  runs-on: ubuntu-latest
+    name: 2 - Qualité des données
+    needs: tests
+    runs-on: ubuntu-latest
 
-  steps:
-    - name: Récupérer le repository
-      uses: actions/checkout@v4
+    steps:
+      - name: Récupérer le repository
+        uses: actions/checkout@v4
 
-    - name: Installer Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-        cache: pip
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
 
-    - name: Installer les dépendances
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Vérifier la version de Great Expectations
-      run: |
-        python -c "import great_expectations as gx; print(gx.__version__)"
-        python -c "from great_expectations.dataset import PandasDataset; print('Import PandasDataset OK')"
+      - name: Vérifier la version de Great Expectations
+        run: |
+          python -c "import great_expectations as gx; print(gx.__version__)"
+          python -c "from great_expectations.dataset import PandasDataset; print('Import PandasDataset OK')"
 
-    - name: Générer, valider et transformer les données
-      run: |
-        dvc repro
+      - name: Générer, valider et transformer les données
+        run: |
+          dvc repro
 
-    - name: Sauvegarder les rapports de données
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: data-quality-reports
-        path: |
-          reports/data_quality/
-        if-no-files-found: warn
+      - name: Sauvegarder les rapports de données
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-quality-reports
+          path: |
+            reports/data_quality/
+          if-no-files-found: warn
 
   training:
     name: 3 - Entraînement et évaluation
