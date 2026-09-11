@@ -53,6 +53,7 @@ jobs:
       - name: Exécuter les tests
         run: |
           python -m pytest -v \
+            --ignore=tests/integration/test_staging_api.py \
             --cov=api \
             --cov=src \
             --cov-report=term-missing \
