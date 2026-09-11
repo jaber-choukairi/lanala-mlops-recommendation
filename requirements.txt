@@ -10,7 +10,7 @@ xgboost
 optuna
 mlflow
 dvc
-great-expectations
+great-expectations==0.18.22
 evidently
 pytest
 pytest-cov
