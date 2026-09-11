@@ -20,3 +20,5 @@ joblib
 supabase
 psycopg2-binary
 requests>=2.32,<3.0
+seaborn==0.13.2
+matplotlib>=3.7,<4.0

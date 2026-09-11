@@ -94,7 +94,7 @@ jobs:
 
       - name: Générer, valider et transformer les données
         run: |
-          dvc repro
+          dvc repro split_data
 
       - name: Sauvegarder les rapports de données
         if: always()
