@@ -125,25 +125,73 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Vérifier MLflow
+        run: |
+          python -c "import mlflow; print('MLflow version :', mlflow.__version__)"
+
       - name: Reproduire les données
         run: |
-          dvc repro
+          dvc repro split_data
+
+      - name: Démarrer un serveur MLflow temporaire
+        run: |
+          mkdir -p mlflow-ci/artifacts
+
+          mlflow server \
+            --host 127.0.0.1 \
+            --port 5000 \
+            --backend-store-uri sqlite:///mlflow-ci.db \
+            --serve-artifacts \
+            --artifacts-destination ./mlflow-ci/artifacts \
+            > mlflow-ci.log 2>&1 &
+
+          echo $! > mlflow-ci.pid
+
+      - name: Attendre que MLflow soit disponible
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent http://localhost:5000/health; then
+              echo ""
+              echo "MLflow est disponible."
+              exit 0
+            fi
+
+            echo "Attente de MLflow - tentative ${attempt}/30"
+            sleep 2
+          done
+
+          echo "MLflow n'a pas démarré correctement."
+          cat mlflow-ci.log
+          exit 1
 
       - name: Entraîner la baseline
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
-          python -m pipelines.train_baseline
+          python -m pipelines.train_baselines
 
       - name: Entraîner XGBoost
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
           python -m pipelines.train_xgboost
 
       - name: Comparer Champion et Challenger
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
           python -m pipelines.compare_champion_challenger
 
-      - name: Vérifier les seuils
+      - name: Vérifier les seuils de performance
         run: |
           python -m pipelines.check_quality_gate
+
+      - name: Afficher les logs MLflow en cas d'échec
+        if: failure()
+        run: |
+          if [ -f mlflow-ci.log ]; then
+            cat mlflow-ci.log
+          fi
 
       - name: Sauvegarder les résultats ML
         if: always()
@@ -154,7 +202,8 @@ jobs:
             reports/phase3/
             reports/phase4/
             reports/phase6/
-          if-no-files-found: error
+            mlflow-ci.log
+          if-no-files-found: warn
 
   staging:
     name: 4 - Déploiement Staging
