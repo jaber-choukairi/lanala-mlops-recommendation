@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "selected_model": "xgboost",
+  "metrics": {
+    "test_top_3_accuracy": 0.852,
+    "test_macro_f1": 0.34274787894186814,
+    "top_3_improvement": 0.02533333333333332,
+    "macro_f1_difference": 0.005107755394313074
+  },
+  "thresholds": {
+    "minimum_test_top_3_accuracy": 0.84,
+    "minimum_test_macro_f1": 0.33,
+    "minimum_top_3_improvement": 0.01,
+    "maximum_macro_f1_regression": 0.005
+  },
+  "gates": {
+    "minimum_test_top_3_accuracy": true,
+    "minimum_test_macro_f1": true,
+    "minimum_top_3_improvement": true,
+    "macro_f1_non_regression": true
+  }
+}
