@@ -298,11 +298,28 @@ jobs:
       - name: Vérifier le LabelEncoder
         shell: powershell
         run: |
-          if (-not (Test-Path "reports/phase4/label_encoder.joblib")) {
-              throw "label_encoder.joblib est introuvable."
+          $encoderPath = "reports/phase4/label_encoder.joblib"
+
+          if (-not (Test-Path $encoderPath -PathType Leaf)) {
+              throw "label_encoder.joblib est absent ou n'est pas un fichier."
           }
 
-          Write-Host "LabelEncoder trouvé."
+          $encoder = Get-Item $encoderPath
+
+          if ($encoder.Length -eq 0) {
+              throw "label_encoder.joblib est vide."
+          }
+
+          Write-Host "LabelEncoder valide : $($encoder.FullName)"
+          Write-Host "Taille : $($encoder.Length) octets"
+
+      - name: Sauvegarder les ressources validées en Staging
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-serving-assets
+          path: reports/phase4/label_encoder.joblib
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Construire et démarrer FastAPI Staging
         shell: powershell
@@ -386,6 +403,46 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      
+      - name: Nettoyer l’ancien montage incorrect
+        shell: powershell
+        run: |
+          $encoderPath = "reports/phase4/label_encoder.joblib"
+
+          if (Test-Path $encoderPath -PathType Container) {
+              Write-Host "Suppression du dossier incorrect : $encoderPath"
+              Remove-Item $encoderPath -Recurse -Force
+          }
+
+          New-Item `
+            -ItemType Directory `
+            -Path "reports/phase4" `
+            -Force | Out-Null
+
+      - name: Télécharger les ressources du Staging
+        uses: actions/download-artifact@v4
+        with:
+          name: staging-serving-assets
+          path: reports/phase4
+
+      - name: Vérifier les ressources de Production
+        shell: powershell
+        run: |
+          $encoderPath = "reports/phase4/label_encoder.joblib"
+
+          if (-not (Test-Path $encoderPath -PathType Leaf)) {
+              Get-ChildItem "reports/phase4" -Recurse
+              throw "Le fichier label_encoder.joblib n'a pas été téléchargé."
+          }
+
+          $encoder = Get-Item $encoderPath
+
+          Write-Host "Fichier trouvé : $($encoder.FullName)"
+          Write-Host "Taille : $($encoder.Length) octets"
+
+          if ($encoder.Length -eq 0) {
+              throw "Le LabelEncoder téléchargé est vide."
+          }
 
       - name: Vérifier MLflow
         shell: powershell
@@ -452,8 +509,6 @@ jobs:
         shell: powershell
         run: |
           $env:MODEL_ALIAS = "production"
-
-          Write-Host "Redémarrage de FastAPI avec l'alias production..."
 
           docker compose up -d `
             --force-recreate `

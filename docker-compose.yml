@@ -72,6 +72,8 @@ services:
         source: ./reports/phase4/label_encoder.joblib
         target: /app/model-assets/label_encoder.joblib
         read_only: true
+        bind:
+          create_host_path: false
 
     depends_on:
       mlflow:
