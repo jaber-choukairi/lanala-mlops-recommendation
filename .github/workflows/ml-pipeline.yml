@@ -452,7 +452,19 @@ jobs:
         shell: powershell
         run: |
           $env:MODEL_ALIAS = "production"
-          docker compose up -d --build --force-recreate api
+
+          Write-Host "Redémarrage de FastAPI avec l'alias production..."
+
+          docker compose up -d `
+            --force-recreate `
+            --no-deps `
+            api
+
+          if ($LASTEXITCODE -ne 0) {
+              throw "Le redémarrage de FastAPI Production a échoué."
+          }
+
+          docker compose ps
 
       - name: Vérifier FastAPI Production
         shell: powershell
