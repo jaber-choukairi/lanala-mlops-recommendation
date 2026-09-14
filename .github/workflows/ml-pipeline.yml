@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       run_deployment:
-        description: "Déployer le modèle en staging"
+        description: "Déployer le modèle en Staging"
         required: true
         type: boolean
         default: false
@@ -48,7 +48,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-cov
 
       - name: Exécuter les tests
         run: |
@@ -87,10 +86,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Vérifier la version de Great Expectations
+      - name: Vérifier Great Expectations
         run: |
-          python -c "import great_expectations as gx; print(gx.__version__)"
-          python -c "from great_expectations.dataset import PandasDataset; print('Import PandasDataset OK')"
+          python -c "import great_expectations as gx; print('Version GX :', gx.__version__)"
+          python -c "from great_expectations.dataset import PandasDataset; print('PandasDataset OK')"
 
       - name: Générer, valider et transformer les données
         run: |
@@ -125,15 +124,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Vérifier MLflow
-        run: |
-          python -c "import mlflow; print('MLflow version :', mlflow.__version__)"
-
       - name: Reproduire les données
         run: |
           dvc repro split_data
 
-      - name: Démarrer un serveur MLflow temporaire
+      - name: Démarrer MLflow temporaire
         run: |
           mkdir -p mlflow-ci/artifacts
 
@@ -147,7 +142,7 @@ jobs:
 
           echo $! > mlflow-ci.pid
 
-      - name: Attendre que MLflow soit disponible
+      - name: Attendre MLflow
         run: |
           for attempt in {1..30}; do
             if curl --fail --silent http://localhost:5000/health; then
@@ -156,44 +151,31 @@ jobs:
               exit 0
             fi
 
-            echo "Attente de MLflow - tentative ${attempt}/30"
+            echo "Attente MLflow : ${attempt}/30"
             sleep 2
           done
 
-          echo "MLflow n'a pas démarré correctement."
+          echo "MLflow ne répond pas."
           cat mlflow-ci.log
           exit 1
 
       - name: Entraîner la baseline
-        env:
-          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
           python -m pipelines.train_baselines
 
       - name: Entraîner XGBoost
-        env:
-          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
           python -m pipelines.train_xgboost
 
       - name: Comparer Champion et Challenger
-        env:
-          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
           python -m pipelines.compare_champion_challenger
 
-      - name: Vérifier les seuils de performance
+      - name: Appliquer le Quality Gate
         run: |
           python -m pipelines.check_quality_gate
 
-      - name: Afficher les logs MLflow en cas d'échec
-        if: failure()
-        run: |
-          if [ -f mlflow-ci.log ]; then
-            cat mlflow-ci.log
-          fi
-
-      - name: Sauvegarder les résultats ML
+      - name: Sauvegarder les résultats
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -204,6 +186,13 @@ jobs:
             reports/phase6/
             mlflow-ci.log
           if-no-files-found: warn
+
+      - name: Afficher les logs MLflow en cas d’échec
+        if: failure()
+        run: |
+          if [ -f mlflow-ci.log ]; then
+            cat mlflow-ci.log
+          fi
 
   staging:
     name: 4 - Déploiement Staging
@@ -240,6 +229,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Vérifier Docker
+        shell: powershell
+        run: |
+          docker --version
+          docker compose version
+          docker compose config
+
       - name: Démarrer MLflow
         shell: powershell
         run: |
@@ -250,60 +246,120 @@ jobs:
         shell: powershell
         run: |
           $maximumAttempts = 30
+          $mlflowAvailable = $false
 
           for ($attempt = 1; $attempt -le $maximumAttempts; $attempt++) {
               try {
                   $response = Invoke-WebRequest `
                     -Uri "http://localhost:5000/health" `
-                    -UseBasicParsing
+                    -UseBasicParsing `
+                    -TimeoutSec 5
 
                   if ($response.StatusCode -eq 200) {
                       Write-Host "MLflow est disponible."
-                      exit 0
+                      $mlflowAvailable = $true
+                      break
                   }
               }
               catch {
-                  Write-Host "Attente de MLflow : tentative $attempt"
+                  Write-Host "Attente MLflow : $attempt/$maximumAttempts"
                   Start-Sleep -Seconds 5
               }
           }
 
-          Write-Error "MLflow ne répond pas."
-          docker compose logs mlflow
-          exit 1
+          if (-not $mlflowAvailable) {
+              docker compose logs mlflow
+              throw "MLflow ne répond pas."
+          }
 
-      - name: Reproduire l’entraînement
+      - name: Préparer les données
         shell: powershell
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
-          dvc repro
-          python -m pipelines.train_baseline
+          dvc repro split_data
+
+      - name: Entraîner et évaluer les modèles
+        shell: powershell
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
+        run: |
+          python -m pipelines.train_baselines
           python -m pipelines.train_xgboost
           python -m pipelines.compare_champion_challenger
           python -m pipelines.check_quality_gate
 
-      - name: Enregistrer le modèle en staging
+      - name: Enregistrer le modèle en Staging
         shell: powershell
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
           python -m pipelines.register_model
 
-      - name: Démarrer FastAPI avec staging
+      - name: Vérifier le LabelEncoder
+        shell: powershell
+        run: |
+          if (-not (Test-Path "reports/phase4/label_encoder.joblib")) {
+              throw "label_encoder.joblib est introuvable."
+          }
+
+          Write-Host "LabelEncoder trouvé."
+
+      - name: Construire et démarrer FastAPI Staging
         shell: powershell
         run: |
           $env:MODEL_ALIAS = "staging"
           docker compose up -d --build --force-recreate api
           docker compose ps
 
-      - name: Tester le modèle staging
+      - name: Attendre FastAPI
         shell: powershell
         run: |
-          python -m pytest tests/integration/test_staging_api.py -v
+          $maximumAttempts = 30
+          $apiAvailable = $false
+
+          for ($attempt = 1; $attempt -le $maximumAttempts; $attempt++) {
+              try {
+                  $health = Invoke-RestMethod `
+                    -Uri "http://localhost:8000/health" `
+                    -TimeoutSec 5
+
+                  Write-Host ($health | ConvertTo-Json)
+
+                  if (
+                      $health.status -eq "healthy" -and
+                      $health.model_loaded -eq $true -and
+                      $health.model_alias -eq "staging"
+                  ) {
+                      Write-Host "FastAPI Staging est disponible."
+                      $apiAvailable = $true
+                      break
+                  }
+              }
+              catch {
+                  Write-Host "Attente FastAPI : $attempt/$maximumAttempts"
+              }
+
+              Start-Sleep -Seconds 5
+          }
+
+          if (-not $apiAvailable) {
+              docker compose logs api
+              throw "FastAPI Staging n'est pas healthy."
+          }
+
+      - name: Tester l’API Staging
+        shell: powershell
+        run: |
+          python -m pytest tests/integration/test_staging_api.py -vv
 
       - name: Afficher les logs en cas d’échec
         if: failure()
         shell: powershell
         run: |
-          docker compose logs mlflow
-          docker compose logs api
+          docker compose ps
+          docker compose logs mlflow --tail=200
+          docker compose logs api --tail=200
 
   production:
     name: 5 - Promotion Production
@@ -333,38 +389,89 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Promouvoir staging vers production
+      - name: Vérifier MLflow
         shell: powershell
+        run: |
+          docker compose up -d mlflow
+
+          $maximumAttempts = 30
+          $mlflowAvailable = $false
+
+          for ($attempt = 1; $attempt -le $maximumAttempts; $attempt++) {
+              try {
+                  $response = Invoke-WebRequest `
+                    -Uri "http://localhost:5000/health" `
+                    -UseBasicParsing `
+                    -TimeoutSec 5
+
+                  if ($response.StatusCode -eq 200) {
+                      $mlflowAvailable = $true
+                      break
+                  }
+              }
+              catch {
+                  Start-Sleep -Seconds 5
+              }
+          }
+
+          if (-not $mlflowAvailable) {
+              docker compose logs mlflow
+              throw "MLflow ne répond pas."
+          }
+
+      - name: Promouvoir Staging vers Production
+        shell: powershell
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
         run: |
           python -m pipelines.promote_model
 
-      - name: Redémarrer FastAPI avec production
+      - name: Redémarrer FastAPI en Production
         shell: powershell
         run: |
           $env:MODEL_ALIAS = "production"
           docker compose up -d --build --force-recreate api
 
-      - name: Vérifier le service Production
+      - name: Vérifier FastAPI Production
         shell: powershell
         run: |
-          $health = Invoke-RestMethod `
-            -Uri "http://localhost:8000/health"
+          $maximumAttempts = 30
+          $productionAvailable = $false
 
-          $health | ConvertTo-Json
+          for ($attempt = 1; $attempt -le $maximumAttempts; $attempt++) {
+              try {
+                  $health = Invoke-RestMethod `
+                    -Uri "http://localhost:8000/health" `
+                    -TimeoutSec 5
 
-          if ($health.status -ne "healthy") {
-              Write-Error "L'API Production n'est pas healthy."
-              exit 1
+                  Write-Host ($health | ConvertTo-Json)
+
+                  if (
+                      $health.status -eq "healthy" -and
+                      $health.model_loaded -eq $true -and
+                      $health.model_alias -eq "production"
+                  ) {
+                      Write-Host "FastAPI Production est disponible."
+                      $productionAvailable = $true
+                      break
+                  }
+              }
+              catch {
+                  Write-Host "Attente Production : $attempt/$maximumAttempts"
+              }
+
+              Start-Sleep -Seconds 5
           }
 
-          if ($health.model_alias -ne "production") {
-              Write-Error "L'API ne charge pas l'alias production."
-              exit 1
+          if (-not $productionAvailable) {
+              docker compose logs api
+              throw "FastAPI Production n'est pas healthy."
           }
 
       - name: Afficher les logs en cas d’échec
         if: failure()
         shell: powershell
         run: |
-          docker compose logs mlflow
-          docker compose logs api
+          docker compose ps
+          docker compose logs mlflow --tail=200
+          docker compose logs api --tail=200

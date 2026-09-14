@@ -5,15 +5,13 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY requirements-serving.txt .
+COPY requirements-serving.txt /app/requirements-serving.txt
 
-RUN python -m pip install --no-cache-dir \
-    --upgrade pip \
-    && python -m pip install --no-cache-dir \
-    -r requirements-serving.txt
+RUN python -m pip install --upgrade pip \
+    && pip install --no-cache-dir -r /app/requirements-serving.txt
 
-COPY api ./api
-COPY src ./src
+COPY api /app/api
+COPY src /app/src
 
 EXPOSE 8000
 
