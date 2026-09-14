@@ -421,8 +421,32 @@ jobs:
         shell: powershell
         env:
           MLFLOW_TRACKING_URI: http://localhost:5000
+          MODEL_NAME: lanala-banking-recommender
         run: |
-          python -m pipelines.promote_model
+          $modelVersion = python -c "import os; from mlflow import MlflowClient; client = MlflowClient(); model = client.get_model_version_by_alias(os.environ['MODEL_NAME'], 'staging'); print(model.version)"
+
+          if ($LASTEXITCODE -ne 0) {
+              throw "Impossible de récupérer la version portant l'alias staging."
+          }
+
+          $modelVersion = ($modelVersion | Select-Object -Last 1).Trim()
+
+          if ([string]::IsNullOrWhiteSpace($modelVersion)) {
+              throw "La version MLflow récupérée est vide."
+          }
+
+          Write-Host "Version Staging trouvée : $modelVersion"
+          Write-Host "Promotion vers Production..."
+
+          python -m pipelines.promote_model `
+            --version $modelVersion `
+            --to production
+
+          if ($LASTEXITCODE -ne 0) {
+              throw "La promotion du modèle vers Production a échoué."
+          }
+
+          Write-Host "Version $modelVersion promue en Production."
 
       - name: Redémarrer FastAPI en Production
         shell: powershell
