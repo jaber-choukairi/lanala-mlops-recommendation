@@ -262,3 +262,55 @@ stages:
       hash: md5
       md5: af40278d84d6687893ce54d446f5af37
       size: 81208
+  build_monitoring_reference:
+    cmd: python -m monitoring.build_reference_data
+    deps:
+    - path: data/splits/train.parquet
+      hash: md5
+      md5: 4867785d3d29636b9a19b1d84cdd4db1
+      size: 230458
+    - path: monitoring/build_reference_data.py
+      hash: md5
+      md5: 7ef2c130bd57886859539819079553a9
+      size: 857
+    outs:
+    - path: data/monitoring/reference.parquet
+      hash: md5
+      md5: 4c74e2df4f33eaa4cd69dc506aca93df
+      size: 205013
+  generate_recent_monitoring_data:
+    cmd: python -m monitoring.generate_recent_data
+    deps:
+    - path: data/monitoring/reference.parquet
+      hash: md5
+      md5: 4c74e2df4f33eaa4cd69dc506aca93df
+      size: 205013
+    - path: monitoring/generate_recent_data.py
+      hash: md5
+      md5: 1abd989091477ba5f79fd849145dc297
+      size: 12916
+    outs:
+    - path: data/monitoring/current.parquet
+      hash: md5
+      md5: 048919535a5cf103bdc6527b34a0b95b
+      size: 74024
+  detect_data_drift:
+    cmd: python -m monitoring.detect_drift
+    deps:
+    - path: data/monitoring/current.parquet
+      hash: md5
+      md5: 048919535a5cf103bdc6527b34a0b95b
+      size: 74024
+    - path: data/monitoring/reference.parquet
+      hash: md5
+      md5: 4c74e2df4f33eaa4cd69dc506aca93df
+      size: 205013
+    - path: monitoring/detect_drift.py
+      hash: md5
+      md5: dfbbb96583582f1b54f9a5521339335c
+      size: 4876
+    outs:
+    - path: reports/monitoring/latest_drift_summary.json
+      hash: md5
+      md5: df424f21cab6d41a468b6f994ee32996
+      size: 483

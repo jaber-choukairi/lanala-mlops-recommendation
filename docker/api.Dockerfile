@@ -2,16 +2,23 @@ FROM python:3.10-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR=1
 
 WORKDIR /app
 
-COPY requirements-serving.txt /app/requirements-serving.txt
+COPY requirements.txt /app/requirements.txt
 
 RUN python -m pip install --upgrade pip \
-    && pip install --no-cache-dir -r /app/requirements-serving.txt
+    && python -m pip install \
+        --no-cache-dir \
+        -r /app/requirements.txt
 
 COPY api /app/api
 COPY src /app/src
+
+RUN mkdir -p \
+    /app/model-assets \
+    /app/reports/monitoring
 
 EXPOSE 8000
 
