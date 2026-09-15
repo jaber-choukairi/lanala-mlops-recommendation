@@ -1,11 +1,16 @@
-from typing import Literal
+from __future__ import annotations
 
-from pydantic import BaseModel
-from pydantic import Field
+from typing import Literal
+from uuid import UUID
+
+from pydantic import BaseModel, Field
 
 
 class ClientInput(BaseModel):
-    client_id: str = Field(min_length=1, max_length=100)
+    client_id: str = Field(
+        min_length=1,
+        max_length=100,
+    )
 
     age: int = Field(ge=18, le=85)
 
@@ -21,7 +26,10 @@ class ClientInput(BaseModel):
         "widowed",
     ]
 
-    number_of_children: int = Field(ge=0, le=10)
+    number_of_children: int = Field(
+        ge=0,
+        le=10,
+    )
 
     employment_status: Literal[
         "employed",
@@ -31,9 +39,20 @@ class ClientInput(BaseModel):
         "unemployed",
     ]
 
-    monthly_income: float = Field(ge=0, le=50000)
-    account_balance: float = Field(ge=0, le=300000)
-    credit_score: int = Field(ge=300, le=850)
+    monthly_income: float = Field(
+        ge=0,
+        le=50000,
+    )
+
+    account_balance: float = Field(
+        ge=0,
+        le=300000,
+    )
+
+    credit_score: int = Field(
+        ge=300,
+        le=850,
+    )
 
     customer_tenure_months: int = Field(
         ge=0,
@@ -50,6 +69,7 @@ class ClientInput(BaseModel):
         le=100000,
     )
 
+    # Valeur normalisée entre 0 et 1.
     digital_activity_score: float = Field(
         ge=0,
         le=1,
@@ -67,16 +87,29 @@ class ClientInput(BaseModel):
 
 
 class ProductRecommendation(BaseModel):
-    rank: int
+    rank: int = Field(ge=1)
     product: str
-    probability: float
+    probability: float = Field(ge=0, le=1)
 
 
 class PredictionResponse(BaseModel):
+    prediction_id: UUID | None = None
     client_id: str
-    status: Literal["success", "blocked"]
+
+    status: Literal[
+        "success",
+        "blocked",
+    ]
+
     reason: str | None = None
-    recommendations: list[ProductRecommendation]
+
+    recommendations: list[
+        ProductRecommendation
+    ]
+
     model_name: str
     model_alias: str
-    model_version: str
+    model_version: str | None = None
+
+    monitoring_saved: bool = False
+    monitoring_warning: str | None = None

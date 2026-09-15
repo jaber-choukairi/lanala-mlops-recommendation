@@ -1,0 +1,1234 @@
+{
+  "metrics": [
+    {
+      "id": "8a8b69ee77cd8773c291cf3f6f78d5f0",
+      "metric_name": "DriftedColumnsCount(drift_share=0.3)",
+      "config": {
+        "type": "evidently:metric_v2:DriftedColumnsCount",
+        "drift_share": 0.3
+      },
+      "value": {
+        "count": 8.0,
+        "share": 0.25
+      }
+    },
+    {
+      "id": "7060b56a0a8d7ea0504e759de552868d",
+      "metric_name": "ValueDrift(column=account_balance,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "account_balance",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.6170037449153182
+    },
+    {
+      "id": "1cf7e5c2a8eb2a62a2667e70ee06d259",
+      "metric_name": "ValueDrift(column=age,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "age",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.03292626223790182
+    },
+    {
+      "id": "e70bf7b625d8b06eb77c0889358997c5",
+      "metric_name": "ValueDrift(column=average_transaction_amount,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "average_transaction_amount",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.386533252905242
+    },
+    {
+      "id": "57169f688e55344f236c45398dcfee52",
+      "metric_name": "ValueDrift(column=balance_to_income_ratio,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "balance_to_income_ratio",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.03160644550719317
+    },
+    {
+      "id": "18040993e2427c559592383658f0bc03",
+      "metric_name": "ValueDrift(column=credit_score,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "credit_score",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.9202958402252368
+    },
+    {
+      "id": "8f74b5cfc5dcabfc6b83149ea7bff47b",
+      "metric_name": "ValueDrift(column=customer_tenure_months,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "customer_tenure_months",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.018578647101444187
+    },
+    {
+      "id": "1a81c8b16a975de5025f3f0ab597c2e3",
+      "metric_name": "ValueDrift(column=digital_activity_score,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "digital_activity_score",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.8066320862407493
+    },
+    {
+      "id": "12819890c24cc192f0daec36bd4952a5",
+      "metric_name": "ValueDrift(column=income_per_child,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "income_per_child",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.02700965110932942
+    },
+    {
+      "id": "f3b53d66fbe702583f9277dc83859788",
+      "metric_name": "ValueDrift(column=monthly_income,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "monthly_income",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 1.1401160420892975
+    },
+    {
+      "id": "cf8c4b6b4c3e4c3f76c073e0f3815009",
+      "metric_name": "ValueDrift(column=number_of_transactions,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "number_of_transactions",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 1.5318538141673188
+    },
+    {
+      "id": "6f63a75e1b2c5ff98f76b56365dcd5d5",
+      "metric_name": "ValueDrift(column=transaction_to_income_ratio,method=Wasserstein distance (normed),threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "transaction_to_income_ratio",
+        "method": "Wasserstein distance (normed)",
+        "threshold": 0.1
+      },
+      "value": 0.02498778439673052
+    },
+    {
+      "id": "91919350d65f4100c6ca59fe0f792d26",
+      "metric_name": "ValueDrift(column=commercial_consent,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "commercial_consent",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.0056552940209348476
+    },
+    {
+      "id": "ac5090317908f4359b0bc4f6c4ec201e",
+      "metric_name": "ValueDrift(column=complaint_open,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "complaint_open",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.007159968368786354
+    },
+    {
+      "id": "a9383a77a2a5fe3c1ac82a1c39cb2cdb",
+      "metric_name": "ValueDrift(column=employment_status,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "employment_status",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.25179189886197173
+    },
+    {
+      "id": "26425e6033477c9b119bf6af4e90d5b5",
+      "metric_name": "ValueDrift(column=gender,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "gender",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.009524042888692881
+    },
+    {
+      "id": "c95ddce36ffaffb0f02f8bc714ae5279",
+      "metric_name": "ValueDrift(column=has_home_loan,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "has_home_loan",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.005744293840844747
+    },
+    {
+      "id": "ec83f71d1de0c4dda4894e1c8d4c0565",
+      "metric_name": "ValueDrift(column=has_investment_plan,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "has_investment_plan",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.018579897634186954
+    },
+    {
+      "id": "95a207fdecef04cb77a3ebe6380d14bd",
+      "metric_name": "ValueDrift(column=has_life_insurance,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "has_life_insurance",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.0074011557623665835
+    },
+    {
+      "id": "48a2fd03bd8898bf1b2d6cf64d4babdf",
+      "metric_name": "ValueDrift(column=has_personal_loan,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "has_personal_loan",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.008817078769606457
+    },
+    {
+      "id": "9107459b8b3b05df7618ebacd465650f",
+      "metric_name": "ValueDrift(column=has_premium_card,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "has_premium_card",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.01588809216399961
+    },
+    {
+      "id": "ee929793ca2d51a0a325f15bcff6b0ad",
+      "metric_name": "ValueDrift(column=has_savings_account,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "has_savings_account",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.004597272965355144
+    },
+    {
+      "id": "6150d6d5f1b2c42f07955e51b3a9936b",
+      "metric_name": "ValueDrift(column=is_digitally_active,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "is_digitally_active",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.005430222203622498
+    },
+    {
+      "id": "0cedc103b2203083c8e6e2438df58be8",
+      "metric_name": "ValueDrift(column=is_eligible_for_commercial_offer,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "is_eligible_for_commercial_offer",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.009080757486952492
+    },
+    {
+      "id": "c53cada7f8e2440cecd7015648ff0073",
+      "metric_name": "ValueDrift(column=is_family_client,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "is_family_client",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.010948219126499145
+    },
+    {
+      "id": "29313299f8a47184108346c4fdb80351",
+      "metric_name": "ValueDrift(column=is_high_balance,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "is_high_balance",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.001404809987431857
+    },
+    {
+      "id": "b100a250fc295fb074df47f1f04161f8",
+      "metric_name": "ValueDrift(column=is_high_income,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "is_high_income",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.006239457141573671
+    },
+    {
+      "id": "1930a76e51bb078a2085c9ffb00394dd",
+      "metric_name": "ValueDrift(column=is_long_term_client,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "is_long_term_client",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.011014193481540455
+    },
+    {
+      "id": "19ba0d9bbb2c0abe7aeda727feb0286c",
+      "metric_name": "ValueDrift(column=is_young_client,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "is_young_client",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.0020552424441900004
+    },
+    {
+      "id": "0e653551af33d7b8c68c332c6de8e2c8",
+      "metric_name": "ValueDrift(column=marital_status,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "marital_status",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.1378661717038982
+    },
+    {
+      "id": "25b77d6d67eaffa4ebe15977a10c28e7",
+      "metric_name": "ValueDrift(column=number_of_children,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "number_of_children",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.01602671110368082
+    },
+    {
+      "id": "d8312968410ac5a481ec1438bf5ff6c2",
+      "metric_name": "ValueDrift(column=number_of_products_owned,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "number_of_products_owned",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.02111271009326339
+    },
+    {
+      "id": "87088f54bf421f73aaa70b5254e93b4a",
+      "metric_name": "ValueDrift(column=products_remaining,method=Jensen-Shannon distance,threshold=0.1)",
+      "config": {
+        "type": "evidently:metric_v2:ValueDrift",
+        "column": "products_remaining",
+        "method": "Jensen-Shannon distance",
+        "threshold": 0.1
+      },
+      "value": 0.0211127100932626
+    }
+  ],
+  "tests": [
+    {
+      "id": "lt",
+      "name": "Share of Drifted Columns: Less 0.300",
+      "description": "Share of Drifted Columns: Actual value 0.250 < 0.300",
+      "metric_config": {
+        "metric_id": "8a8b69ee77cd8773c291cf3f6f78d5f0",
+        "params": {
+          "type": "evidently:metric_v2:DriftedColumnsCount",
+          "drift_share": 0.3
+        }
+      },
+      "test_config": {
+        "type": "evidently:test_v2:LessThanMetricTest",
+        "is_critical": true,
+        "alias": null,
+        "label_filters": null,
+        "threshold": 0.3
+      },
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:CountBoundTest",
+        "test": {
+          "type": "evidently:test_v2:LessThanMetricTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null,
+          "threshold": 0.3
+        },
+        "metric_fingerprint": "8a8b69ee77cd8773c291cf3f6f78d5f0",
+        "is_count": false
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column account_balance",
+      "description": "Drift score is 0.62. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "7060b56a0a8d7ea0504e759de552868d",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "account_balance",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "FAIL",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "7060b56a0a8d7ea0504e759de552868d"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column age",
+      "description": "Drift score is 0.03. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "1cf7e5c2a8eb2a62a2667e70ee06d259",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "age",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "1cf7e5c2a8eb2a62a2667e70ee06d259"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column average_transaction_amount",
+      "description": "Drift score is 0.39. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "e70bf7b625d8b06eb77c0889358997c5",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "average_transaction_amount",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "FAIL",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "e70bf7b625d8b06eb77c0889358997c5"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column balance_to_income_ratio",
+      "description": "Drift score is 0.03. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "57169f688e55344f236c45398dcfee52",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "balance_to_income_ratio",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "57169f688e55344f236c45398dcfee52"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column credit_score",
+      "description": "Drift score is 0.92. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "18040993e2427c559592383658f0bc03",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "credit_score",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "FAIL",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "18040993e2427c559592383658f0bc03"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column customer_tenure_months",
+      "description": "Drift score is 0.02. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "8f74b5cfc5dcabfc6b83149ea7bff47b",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "customer_tenure_months",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "8f74b5cfc5dcabfc6b83149ea7bff47b"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column digital_activity_score",
+      "description": "Drift score is 0.81. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "1a81c8b16a975de5025f3f0ab597c2e3",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "digital_activity_score",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "FAIL",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "1a81c8b16a975de5025f3f0ab597c2e3"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column income_per_child",
+      "description": "Drift score is 0.03. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "12819890c24cc192f0daec36bd4952a5",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "income_per_child",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "12819890c24cc192f0daec36bd4952a5"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column monthly_income",
+      "description": "Drift score is 1.14. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "f3b53d66fbe702583f9277dc83859788",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "monthly_income",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "FAIL",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "f3b53d66fbe702583f9277dc83859788"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column number_of_transactions",
+      "description": "Drift score is 1.53. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "cf8c4b6b4c3e4c3f76c073e0f3815009",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "number_of_transactions",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "FAIL",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "cf8c4b6b4c3e4c3f76c073e0f3815009"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column transaction_to_income_ratio",
+      "description": "Drift score is 0.02. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "6f63a75e1b2c5ff98f76b56365dcd5d5",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "transaction_to_income_ratio",
+          "method": "Wasserstein distance (normed)",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "6f63a75e1b2c5ff98f76b56365dcd5d5"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column commercial_consent",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "91919350d65f4100c6ca59fe0f792d26",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "commercial_consent",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "91919350d65f4100c6ca59fe0f792d26"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column complaint_open",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "ac5090317908f4359b0bc4f6c4ec201e",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "complaint_open",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "ac5090317908f4359b0bc4f6c4ec201e"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column employment_status",
+      "description": "Drift score is 0.25. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "a9383a77a2a5fe3c1ac82a1c39cb2cdb",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "employment_status",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "FAIL",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "a9383a77a2a5fe3c1ac82a1c39cb2cdb"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column gender",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "26425e6033477c9b119bf6af4e90d5b5",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "gender",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "26425e6033477c9b119bf6af4e90d5b5"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column has_home_loan",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "c95ddce36ffaffb0f02f8bc714ae5279",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "has_home_loan",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "c95ddce36ffaffb0f02f8bc714ae5279"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column has_investment_plan",
+      "description": "Drift score is 0.02. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "ec83f71d1de0c4dda4894e1c8d4c0565",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "has_investment_plan",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "ec83f71d1de0c4dda4894e1c8d4c0565"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column has_life_insurance",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "95a207fdecef04cb77a3ebe6380d14bd",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "has_life_insurance",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "95a207fdecef04cb77a3ebe6380d14bd"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column has_personal_loan",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "48a2fd03bd8898bf1b2d6cf64d4babdf",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "has_personal_loan",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "48a2fd03bd8898bf1b2d6cf64d4babdf"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column has_premium_card",
+      "description": "Drift score is 0.02. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "9107459b8b3b05df7618ebacd465650f",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "has_premium_card",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "9107459b8b3b05df7618ebacd465650f"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column has_savings_account",
+      "description": "Drift score is 0.00. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "ee929793ca2d51a0a325f15bcff6b0ad",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "has_savings_account",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "ee929793ca2d51a0a325f15bcff6b0ad"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column is_digitally_active",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "6150d6d5f1b2c42f07955e51b3a9936b",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "is_digitally_active",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "6150d6d5f1b2c42f07955e51b3a9936b"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column is_eligible_for_commercial_offer",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "0cedc103b2203083c8e6e2438df58be8",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "is_eligible_for_commercial_offer",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "0cedc103b2203083c8e6e2438df58be8"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column is_family_client",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "c53cada7f8e2440cecd7015648ff0073",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "is_family_client",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "c53cada7f8e2440cecd7015648ff0073"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column is_high_balance",
+      "description": "Drift score is 0.00. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "29313299f8a47184108346c4fdb80351",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "is_high_balance",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "29313299f8a47184108346c4fdb80351"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column is_high_income",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "b100a250fc295fb074df47f1f04161f8",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "is_high_income",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "b100a250fc295fb074df47f1f04161f8"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column is_long_term_client",
+      "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "1930a76e51bb078a2085c9ffb00394dd",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "is_long_term_client",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "1930a76e51bb078a2085c9ffb00394dd"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column is_young_client",
+      "description": "Drift score is 0.00. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "19ba0d9bbb2c0abe7aeda727feb0286c",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "is_young_client",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "19ba0d9bbb2c0abe7aeda727feb0286c"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column marital_status",
+      "description": "Drift score is 0.14. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "0e653551af33d7b8c68c332c6de8e2c8",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "marital_status",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "FAIL",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "0e653551af33d7b8c68c332c6de8e2c8"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column number_of_children",
+      "description": "Drift score is 0.02. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "25b77d6d67eaffa4ebe15977a10c28e7",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "number_of_children",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "25b77d6d67eaffa4ebe15977a10c28e7"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column number_of_products_owned",
+      "description": "Drift score is 0.02. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "d8312968410ac5a481ec1438bf5ff6c2",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "number_of_products_owned",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "d8312968410ac5a481ec1438bf5ff6c2"
+      }
+    },
+    {
+      "id": "drift",
+      "name": "Value Drift for column products_remaining",
+      "description": "Drift score is 0.02. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+      "metric_config": {
+        "metric_id": "87088f54bf421f73aaa70b5254e93b4a",
+        "params": {
+          "type": "evidently:metric_v2:ValueDrift",
+          "column": "products_remaining",
+          "method": "Jensen-Shannon distance",
+          "threshold": 0.1
+        }
+      },
+      "test_config": {},
+      "status": "SUCCESS",
+      "bound_test": {
+        "type": "evidently:bound_test:ValueDriftBoundTest",
+        "test": {
+          "type": "evidently:test_v2:ValueDriftTest",
+          "is_critical": true,
+          "alias": null,
+          "label_filters": null
+        },
+        "metric_fingerprint": "87088f54bf421f73aaa70b5254e93b4a"
+      }
+    }
+  ]
+}

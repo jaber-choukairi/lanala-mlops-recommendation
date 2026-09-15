@@ -115,3 +115,27 @@ stages:
       - reports/phase4/classification_report.json
       - reports/phase4/promotion_decision.json
       - reports/phase4/label_encoder.joblib
+  build_monitoring_reference:
+    cmd: python -m monitoring.build_reference_data
+    deps:
+      - monitoring/build_reference_data.py
+      - data/splits/train.parquet
+    outs:
+      - data/monitoring/reference.parquet
+
+  generate_recent_monitoring_data:
+    cmd: python -m monitoring.generate_recent_data
+    deps:
+      - monitoring/generate_recent_data.py
+      - data/monitoring/reference.parquet
+    outs:
+      - data/monitoring/current.parquet
+
+  detect_data_drift:
+    cmd: python -m monitoring.detect_drift
+    deps:
+      - monitoring/detect_drift.py
+      - data/monitoring/reference.parquet
+      - data/monitoring/current.parquet
+    outs:
+      - reports/monitoring/latest_drift_summary.json

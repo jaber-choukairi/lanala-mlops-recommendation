@@ -1,0 +1,10 @@
+{
+  "total_feedbacks": 0,
+  "accepted": 0,
+  "rejected": 0,
+  "no_action": 0,
+  "acceptance_rate": 0.0,
+  "rejection_rate": 0.0,
+  "no_action_rate": 0.0,
+  "feedbacks_by_product": {}
+}

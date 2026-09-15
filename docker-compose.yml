@@ -13,10 +13,10 @@ services:
       - --port
       - "5000"
       - --backend-store-uri
-      - "sqlite:////mlflow/database/mlflow.db"
+      - sqlite:////mlflow/database/mlflow.db
       - --serve-artifacts
       - --artifacts-destination
-      - "/mlflow/artifacts"
+      - /mlflow/artifacts
       - --allowed-hosts
       - "*"
 
@@ -59,9 +59,15 @@ services:
     environment:
       MLFLOW_TRACKING_URI: http://mlflow:5000
       MODEL_NAME: lanala-banking-recommender
-      MODEL_ALIAS: ${MODEL_ALIAS:-staging}
+      MODEL_ALIAS: ${MODEL_ALIAS:-production}
       TOP_K: "3"
-      LABEL_ENCODER_PATH: /app/model-assets/label_encoder.joblib
+
+      LABEL_ENCODER_PATH: >-
+        /app/model-assets/label_encoder.joblib
+
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_KEY: ${SUPABASE_KEY:-}
+
       PYTHONUNBUFFERED: "1"
 
     ports:
@@ -74,6 +80,11 @@ services:
         read_only: true
         bind:
           create_host_path: false
+          
+      - type: bind
+        source: ./reports/monitoring
+        target: /app/reports/monitoring
+        read_only: true
 
     depends_on:
       mlflow:
@@ -93,7 +104,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 15
-      start_period: 30s
+      start_period: 45s
 
     restart: unless-stopped
 
